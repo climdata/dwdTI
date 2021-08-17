@@ -8,39 +8,21 @@ output:
   pdf_document: default
 ---
 
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 ## Work with yearly and moving/rolling 30y normalization
 
-
-```r
+```{r rolling-norm-30, echo=TRUE}
 require("ggplot2")
-```
-
-```
-## Loading required package: ggplot2
-```
-
-```r
 color.temperature <- c("#0000FF", "#00CCCC", "#FFFFFF", "#EEAA33", "#FF5555")
 #install.packages("data.table")
 library(data.table)
 #install.packages("zoo")
 library(zoo)
-```
 
-```
-## 
-## Attaching package: 'zoo'
-```
 
-```
-## The following objects are masked from 'package:base':
-## 
-##     as.Date, as.Date.numeric
-```
-
-```r
 py3 <- read.csv("https://raw.githubusercontent.com/climdata/baur/master/csv/baur_monthly.csv", sep=",")
 
 rollingAVG <- function(data,mon,wid) {
@@ -67,19 +49,15 @@ mp + geom_raster(aes(fill=ind))+
   scale_y_continuous(breaks=c(1,6,12))+
   theme(panel.background = element_rect(fill = '#EEEEEE', colour = 'white'), legend.position="right", text=element_text(size=14))+
   scale_fill_gradientn(colours=color.temperature)
-```
 
-![](README_files/figure-html/rolling-norm-30-1.png)<!-- -->
-
-```r
 #hist(norm$temperature)
+
 ```
 
 
 ## Work with yearly and moving/rolling 10y normalization
 
-
-```r
+```{r rolling-norm-10, echo=TRUE}
 #install.packages("data.table")
 library(data.table)
 #install.packages("zoo")
@@ -99,20 +77,16 @@ mp + geom_raster(aes(fill=ind))+
   scale_y_continuous(breaks=c(1,6,12))+
   theme(panel.background = element_rect(fill = '#EEEEEE', colour = 'white'), legend.position="right", text=element_text(size=14))+
   scale_fill_gradientn(colours=color.temperature)
-```
 
-![](README_files/figure-html/rolling-norm-10-1.png)<!-- -->
-
-```r
 #hist(norm$temperature)
+
 ```
 
 
 
 ## Work with yearly and moving/rolling 10y linearization
 
-
-```r
+```{r rolling-glm-10, echo=TRUE}
 #install.packages("data.table")
 library(data.table)
 #install.packages("zoo")
@@ -144,20 +118,16 @@ mp + geom_raster(aes(fill=ind))+
   scale_y_continuous(breaks=c(1,6,12))+
   theme(panel.background = element_rect(fill = '#EEEEEE', colour = 'white'), legend.position="right", text=element_text(size=14))+
   scale_fill_gradientn(colours=color.temperature)
-```
 
-![](README_files/figure-html/rolling-glm-10-1.png)<!-- -->
-
-```r
 #hist(norm$temperature)
 #hist(norm$ind)
+
 ```
 
 
 ## Work with yearly and moving/rolling 30y linearization
 
-
-```r
+```{r rolling-glm-30, echo=TRUE}
 #install.packages("data.table")
 library(data.table)
 #install.packages("zoo")
@@ -177,20 +147,16 @@ mp + geom_raster(aes(fill=ind))+
   scale_y_continuous(breaks=c(1,6,12))+
   theme(panel.background = element_rect(fill = '#EEEEEE', colour = 'white'), legend.position="right", text=element_text(size=14))+
   scale_fill_gradientn(colours=color.temperature)
-```
 
-![](README_files/figure-html/rolling-glm-30-1.png)<!-- -->
-
-```r
 #hist(norm$temperature)
 #hist(norm$ind)
+
 ```
 
 
 ## Work with yearly and fixed normalization
 
-
-```r
+```{r fixed-norm, echo=TRUE}
 #install.packages("data.table")
 library(data.table)
 library(zoo)
@@ -219,10 +185,7 @@ mp + geom_raster(aes(fill=ind))+
   scale_y_continuous(breaks=c(1,6,12))+
   theme(panel.background = element_rect(fill = '#EEEEEE', colour = 'white'), legend.position="right", text=element_text(size=14))+
   scale_fill_gradientn(colours=color.temperature)
-```
 
-![](README_files/figure-html/fixed-norm-1.png)<!-- -->
-
-```r
 #hist(norm$temperature)
+
 ```
