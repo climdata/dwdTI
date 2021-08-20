@@ -21,10 +21,12 @@ color.temperature <- c("#0000FF", "#00CCCC", "#FFFFFF", "#EEAA33", "#FF5555")
 library(data.table)
 #install.packages("zoo")
 library(zoo)
+library(rollRegres)
 
 
 tmDwd <- read.csv("https://raw.githubusercontent.com/climdata/baur/master/csv/baur_monthly.csv", sep=",")
 tmbCompl <- read.csv("https://raw.githubusercontent.com/climdata/glaser2010/master/csv/ti_1500_2xxx_monthly.csv", sep=",", na = "NA")
+tmbCompl$ts <- signif(tmbCompl$year + (tmbCompl$month-0.5)/12, digits=6)
 #tempFull <- tempCompl[,c("year","month","ti")]
 
 #1949, Nov
@@ -57,7 +59,7 @@ mp + geom_raster(aes(fill=ind))+
 
 #hist(norm$temperature)
 
-tmb <- subset(tmbCompl, tmbCompl$ts<min(tia30$ts)) 
+tmb <- subset(tmbCompl, tmbCompl$ts<min(tia30$ts-0.01)) 
 names(tmb)[names(tmb) == "ti"] <- "tia30"
 names(tia30)[names(tia30) == "ind"] <- "tia30"
 tia30$temperature = NULL
@@ -87,7 +89,7 @@ mp + geom_raster(aes(fill=ind))+
 
 #hist(norm$temperature)
 
-tmb <- subset(tmbCompl, tmbCompl$ts<min(tia10$ts))
+tmb <- subset(tmbCompl, tmbCompl$ts<min(tia10$ts-0.01))
 names(tmb)[names(tmb) == "ti"] <- "tia10"
 names(tia10)[names(tia10) == "ind"] <- "tia10"
 tia10$temperature = NULL
@@ -134,7 +136,7 @@ mp + geom_raster(aes(fill=ind))+
 #hist(norm$temperature)
 #hist(norm$ind)
 
-tmb <- subset(tmbCompl, tmbCompl$ts<min(til10$ts))
+tmb <- subset(tmbCompl, tmbCompl$ts<min(til10$ts-0.01))
 names(tmb)[names(tmb) == "ti"] <- "til10"
 names(til10)[names(til10) == "ind"] <- "til10"
 til10$temperature = NULL
@@ -166,7 +168,7 @@ mp + geom_raster(aes(fill=ind))+
 #hist(norm$temperature)
 #hist(norm$ind)
 
-tmb <- subset(tmbCompl, tmbCompl$ts<min(til30$ts))
+tmb <- subset(tmbCompl, tmbCompl$ts<min(til30$ts-0.01))
 names(tmb)[names(tmb) == "ti"] <- "til30"
 names(til30)[names(til30) == "ind"] <- "til30"
 til30$temperature = NULL
@@ -203,7 +205,7 @@ mp + geom_raster(aes(fill=ind))+
 
 #hist(norm$temperature)
 
-tmb <- subset(tmbCompl, tmbCompl$ts<min(tis99$ts))
+tmb <- subset(tmbCompl, tmbCompl$ts<min(tis99$ts-0.01))
 names(tmb)[names(tmb) == "ti"] <- "tis99"
 names(tis99)[names(tis99) == "ind"] <- "tis99"
 tis99$temperature = NULL

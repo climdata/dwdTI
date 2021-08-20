@@ -41,8 +41,12 @@ library(zoo)
 ```
 
 ```r
+library(rollRegres)
+
+
 tmDwd <- read.csv("https://raw.githubusercontent.com/climdata/baur/master/csv/baur_monthly.csv", sep=",")
 tmbCompl <- read.csv("https://raw.githubusercontent.com/climdata/glaser2010/master/csv/ti_1500_2xxx_monthly.csv", sep=",", na = "NA")
+tmbCompl$ts <- signif(tmbCompl$year + (tmbCompl$month-0.5)/12, digits=6)
 #tempFull <- tempCompl[,c("year","month","ti")]
 
 #1949, Nov
@@ -64,7 +68,7 @@ for (mont in c(2,3,4,5,6,7,8,9,10,11,12)) {
   tmp <-rollingAVG(tmDwd,mont,30)
   tia30 <- rbind(tia30, tmp)
 }
-
+#tia30 <- tia30[order(tia30$ts),]
 norm <- tia30
 
 mp <- ggplot(norm, aes(year, month))
@@ -79,19 +83,12 @@ mp + geom_raster(aes(fill=ind))+
 ```r
 #hist(norm$temperature)
 
-tmb = subset(tmbCompl, (tmbCompl$ts<tia30$ts)) 
-```
-
-```
-## Warning in tmbCompl$ts < tia30$ts: longer object length is not a multiple of
-## shorter object length
-```
-
-```r
+tmb <- subset(tmbCompl, tmbCompl$ts<min(tia30$ts-0.01)) 
 names(tmb)[names(tmb) == "ti"] <- "tia30"
 names(tia30)[names(tia30) == "ind"] <- "tia30"
 tia30$temperature = NULL
 tia30 = rbind(tia30, tmb)
+#tia30 <- tia30[order(tia30$ts),]
 ```
 
 
@@ -99,11 +96,6 @@ tia30 = rbind(tia30, tmb)
 
 
 ```r
-#install.packages("data.table")
-library(data.table)
-#install.packages("zoo")
-library(zoo)
-
 tia10 <- rollingAVG(tmDwd,1,10)
 for (mont in c(2,3,4,5,6,7,8,9,10,11,12)) {
   tmp <-rollingAVG(tmDwd,mont,10)
@@ -125,19 +117,12 @@ mp + geom_raster(aes(fill=ind))+
 ```r
 #hist(norm$temperature)
 
-tmb = subset(tmbCompl, (tmbCompl$ts<tia10$ts)) 
-```
-
-```
-## Warning in tmbCompl$ts < tia10$ts: longer object length is not a multiple of
-## shorter object length
-```
-
-```r
+tmb <- subset(tmbCompl, tmbCompl$ts<min(tia10$ts-0.01))
 names(tmb)[names(tmb) == "ti"] <- "tia10"
 names(tia10)[names(tia10) == "ind"] <- "tia10"
 tia10$temperature = NULL
 tia10 = rbind(tia10, tmb)
+#tia10 <- tia10[order(tia10$ts),]
 ```
 
 
@@ -147,9 +132,6 @@ tia10 = rbind(tia10, tmb)
 
 ```r
 #install.packages("data.table")
-library(data.table)
-#install.packages("zoo")
-library(rollRegres)
 
 rollingGLM <- function(data, mon, wid) {
   py4 <-  subset(data, (data$year>1752 & data$month == mon))
@@ -186,19 +168,12 @@ mp + geom_raster(aes(fill=ind))+
 #hist(norm$temperature)
 #hist(norm$ind)
 
-tmb = subset(tmbCompl, (tmbCompl$ts<til10$ts)) 
-```
-
-```
-## Warning in tmbCompl$ts < til10$ts: longer object length is not a multiple of
-## shorter object length
-```
-
-```r
+tmb <- subset(tmbCompl, tmbCompl$ts<min(til10$ts-0.01))
 names(tmb)[names(tmb) == "ti"] <- "til10"
 names(til10)[names(til10) == "ind"] <- "til10"
 til10$temperature = NULL
 til10 = rbind(til10, tmb)
+#til10 <- til10[order(til10$ts),]
 ```
 
 
@@ -206,11 +181,6 @@ til10 = rbind(til10, tmb)
 
 
 ```r
-#install.packages("data.table")
-library(data.table)
-#install.packages("zoo")
-library(rollRegres)
-
 til30 <- rollingGLM(tmDwd,1,30)
 for (mont in c(2,3,4,5,6,7,8,9,10,11,12)) {
   tmp <-rollingGLM(tmDwd,mont,30)
@@ -233,19 +203,12 @@ mp + geom_raster(aes(fill=ind))+
 #hist(norm$temperature)
 #hist(norm$ind)
 
-tmb = subset(tmbCompl, (tmbCompl$ts<til30$ts)) 
-```
-
-```
-## Warning in tmbCompl$ts < til30$ts: longer object length is not a multiple of
-## shorter object length
-```
-
-```r
+tmb <- subset(tmbCompl, tmbCompl$ts<min(til30$ts-0.01))
 names(tmb)[names(tmb) == "ti"] <- "til30"
 names(til30)[names(til30) == "ind"] <- "til30"
 til30$temperature = NULL
 til30 = rbind(til30, tmb)
+#til30 <- til30[order(til30$ts),]
 ```
 
 
@@ -253,10 +216,6 @@ til30 = rbind(til30, tmb)
 
 
 ```r
-#install.packages("data.table")
-library(data.table)
-library(zoo)
-
 tis99 <-  subset(tmDwd, (tmDwd$year>1752 & tmDwd$month == 1)) 
 
 avg <- mean(tis99$temperature, na.rm = TRUE)
@@ -285,19 +244,12 @@ mp + geom_raster(aes(fill=ind))+
 ```r
 #hist(norm$temperature)
 
-tmb = subset(tmbCompl, (tmbCompl$ts<tis99$ts)) 
-```
-
-```
-## Warning in tmbCompl$ts < tis99$ts: longer object length is not a multiple of
-## shorter object length
-```
-
-```r
+tmb <- subset(tmbCompl, tmbCompl$ts<min(tis99$ts-0.01))
 names(tmb)[names(tmb) == "ti"] <- "tis99"
 names(tis99)[names(tis99) == "ind"] <- "tis99"
 tis99$temperature = NULL
 tis99 = rbind(tis99, tmb)
+#tis99 <- tis99[order(tis99$ts),]
 ```
 
 
