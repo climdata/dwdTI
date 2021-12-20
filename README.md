@@ -21,6 +21,13 @@ require("ggplot2")
 ## Loading required package: ggplot2
 ```
 
+```
+## Registered S3 methods overwritten by 'tibble':
+##   method     from  
+##   format.tbl pillar
+##   print.tbl  pillar
+```
+
 ```r
 color.temperature <- c("#0000FF", "#00CCCC", "#FFFFFF", "#EEAA33", "#FF5555")
 #install.packages("data.table")
@@ -275,6 +282,35 @@ tiAll <- tiAll[order(tiAll$ts),]
 
 
 write.table(tiAll, file = "csv/ti_de.csv", append = FALSE, quote = TRUE, sep = ",",
+            eol = "\n", na = "NA", dec = ".", row.names = FALSE,
+            col.names = TRUE, qmethod = "escape", fileEncoding = "UTF-8")
+```
+
+
+## Calculate multi-monthly indices and store
+
+
+```r
+tiMulti = tis99
+names(tiMulti)[names(tiMulti) == "tis99"] <- "sti1"
+
+tiMulti$ts <- signif(tiMulti$year + (tiMulti$month-0.5)/12, digits=6)
+tiMulti$time <- paste(tiMulti$year,tiMulti$month, '15 00:00:00', sep='-')
+tiMulti <- tiMulti[order(tiMulti$ts),]
+
+prev <- tiMulti$sti1
+for (m in c(2,3,4,5,6,7,8,9,10,11,12)) {
+  column <- paste("sti", m, sep="")
+  sti <- rollapply(tiMulti$sti1, width=m, by=1, FUN=sum)
+  tiMulti$sti <- prev
+  tiMulti$sti[m:length(tiMulti$sti)] <- sti
+  tiMulti$sti <- tiMulti$sti*m^(-1/sqrt(3))
+  prev <- tiMulti$sti  
+  names(tiMulti)[names(tiMulti) == 'sti'] <- column
+}
+tiMulti <- tiMulti[order(tiMulti$ts),]
+
+write.table(tiMulti, file = "csv/sti_de.csv", append = FALSE, quote = TRUE, sep = ",",
             eol = "\n", na = "NA", dec = ".", row.names = FALSE,
             col.names = TRUE, qmethod = "escape", fileEncoding = "UTF-8")
 ```
