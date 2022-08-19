@@ -21,13 +21,6 @@ require("ggplot2")
 ## Loading required package: ggplot2
 ```
 
-```
-## Registered S3 methods overwritten by 'tibble':
-##   method     from  
-##   format.tbl pillar
-##   print.tbl  pillar
-```
-
 ```r
 color.temperature <- c("#0000FF", "#00CCCC", "#FFFFFF", "#EEAA33", "#FF5555")
 #install.packages("data.table")
