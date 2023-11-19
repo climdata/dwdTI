@@ -32,8 +32,11 @@ jobs:
 #          ref: master
 #      - name: Install liblapack-dev
 #        run: (apt-get -y --no-install-recommends install liblapack-dev gfortran) 
+## WAS REMOVED!
+##      - name: Install rollRegres
+##        run: (R -e "install.packages('rollRegres')")
       - name: Install rollRegres
-        run: (R -e "install.packages('rollRegres')")
+        run: devtools::install_github("boennecd/rollRegres", upgrade_dependencies = FALSE, build_vignettes = TRUE)        
       - name: Run knitr
         run: (R -e "rmarkdown::render('/cre/R/README.Rmd')")
       - name: Submit changes       
