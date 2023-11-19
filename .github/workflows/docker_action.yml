@@ -30,8 +30,8 @@ jobs:
           chown -R $(id -u):$(id -g) $PWD
 #        with:
 #          ref: master
-      - name: Install liblapack-dev
-        run: (apt-get -y --no-install-recommends install liblapack-dev gfortran) 
+#      - name: Install liblapack-dev
+#        run: (apt-get -y --no-install-recommends install liblapack-dev gfortran) 
       - name: Install rollRegres
         run: (R -e "install.packages('rollRegres')")
       - name: Run knitr
