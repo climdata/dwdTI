@@ -39,7 +39,7 @@ jobs:
 ##      - name: Install rollRegres
 ##        run: (R -e "devtools::install_github('boennecd/rollRegres', upgrade_dependencies = FALSE, build_vignettes = TRUE)")  
       - name: Install rollRegres
-        run: (R -e "devtools::install.packages('/cre/R/packages/rollRegres_0.1.4.tar.gz', repos = NULL, type='source')")  
+        run: (R -e "install.packages('/cre/R/packages/rollRegres_0.1.4.tar.gz', repos = NULL, type='source')")  
       - name: Run knitr
         run: (R -e "rmarkdown::render('/cre/R/README.Rmd')")
       - name: Submit changes       
